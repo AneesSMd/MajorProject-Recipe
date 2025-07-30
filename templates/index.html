@@ -203,6 +203,95 @@
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
       }
+      
+      .Menu-btn,
+      .list-all-btn {
+        padding: 15px 25px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .Menu-btn:hover,
+      .list-all-btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+      }
+
+      .menu-container {
+  display: none;
+  max-width: 800px;
+  margin: 0 auto 30px;
+  background: #1a1a3a;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 2;
+  border: 1px solid #007bff;
+}
+
+.menu-title {
+  color: #007bff;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cuisine-section {
+  margin-bottom: 20px;
+}
+
+.cuisine-title {
+  color: #87ceeb;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #3a3a5a;
+  padding-bottom: 5px;
+}
+
+.food-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.food-item {
+  padding: 8px 12px;
+  background-color: #2a2a4a;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.food-item:hover {
+  background-color: #3a3a5a;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+}
+
+.close-menu-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #87ceeb;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-menu-btn:hover {
+  color: #007bff;
+  transform: scale(1.1);
+}
 
       /* Autocomplete Suggestions */
       .autocomplete-suggestions {
@@ -724,10 +813,10 @@
       <div class="logo">FOOD<span>IES</span></div>
       <div class="nav-links">
         <a href="{{url_for('main')}}">Home</a>
-        <a href="{{url_for('contacts')}}">Contacts</a>
         <a href="#help" id="help-link">Help</a>
-        <a href="{{url_for('login')}}">Login</a>
-        <a href="{{url_for('signup')}}">Signup</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+        <!-- <a href="{{url_for('login')}}">Login</a>
+        <a href="{{url_for('signup')}}">Signup</a> -->
       </div>
     </header>
 
@@ -742,6 +831,10 @@
     <section id="search-section">
       <div class="search-container">
         <div class="search-box">
+          
+      <div class="Menu">
+        <a href="#Menu" id="menu-link"><button class="Menu-btn">Menu</button></a>
+      </div>
           <input
             type="text"
             class="search-input"
@@ -759,7 +852,27 @@
         <div class="autocomplete-suggestions"></div>
       </div>
     </section>
-
+<section id="menu-section">
+  <div class="menu-container">
+    <button class="close-menu-btn"><i class="fas fa-times"></i></button>
+    <h2 class="menu-title">Food Menu</h2>
+    
+    <div class="cuisine-section">
+      <h3 class="cuisine-title">Indian Cuisine</h3>
+      <div class="food-list" id="indian-food-list"></div>
+    </div>
+    
+    <div class="cuisine-section">
+      <h3 class="cuisine-title">Italian Cuisine</h3>
+      <div class="food-list" id="italian-food-list"></div>
+    </div>
+    
+    <div class="cuisine-section">
+      <h3 class="cuisine-title">Chinese Cuisine</h3>
+      <div class="food-list" id="chinese-food-list"></div>
+    </div>
+  </div>
+</section>
     <!-- Recipe Details Section (New) -->
     <section class="recipe-details-section" id="recipe-details-section">
       <div class="recipe-details-content">
@@ -992,8 +1105,8 @@
           </p>
           <p>
             <strong>Phone:</strong>
-            [Your Phone Number Here] (Available Monday - Friday, 9 AM - 5 PM
-            [Your Time Zone])
+            91+ 9392690037 (Available Monday - Friday, 9 AM - 5 PM
+            Time zone in India (GMT+5:30))
           </p>
           <p>
             <strong>Social Media:</strong>
@@ -1008,6 +1121,18 @@
             Prefer to send us a message directly? Fill out our
             <a href="[Link to your feedback form]">online feedback form</a>.
           </p>
+          <form>
+      <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Your Name" required>
+      </div>
+      <div class="mb-3">
+        <input type="email" class="form-control" placeholder="Your Email" required>
+      </div>
+      <div class="mb-3">
+        <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-custom">Send Message</button>
+    </form>
         </div>
         <p>
           Thank you for being a part of the Foodies community. Happy cooking!
@@ -1065,7 +1190,80 @@
         const slider = document.querySelector(".slider");
         const prevBtn = document.querySelector(".prev-btn");
         const nextBtn = document.querySelector(".next-btn");
+        // Menu button functionality
+const menuBtn = document.querySelector(".Menu-btn");
+const menuContainer = document.querySelector(".menu-container");
+const closeMenuBtn = document.querySelector(".close-menu-btn");
 
+// Function to populate the menu with food items
+function populateMenu() {
+  // Populate Indian food list
+  const indianFoodList = document.getElementById("indian-food-list");
+  indianFoodList.innerHTML = "";
+  indianDishes.forEach(dish => {
+    const foodItem = document.createElement("div");
+    foodItem.className = "food-item";
+    foodItem.textContent = dish.name;
+    foodItem.addEventListener("click", () => {
+      searchInput.value = dish.name;
+      cuisineSelector.value = "indian";
+      displayRecipeDetails(dish);
+      menuContainer.style.display = "none";
+    });
+    indianFoodList.appendChild(foodItem);
+  });
+  
+  // Populate Italian food list
+  const italianFoodList = document.getElementById("italian-food-list");
+  italianFoodList.innerHTML = "";
+  italianDishes.forEach(dish => {
+    const foodItem = document.createElement("div");
+    foodItem.className = "food-item";
+    foodItem.textContent = dish.name;
+    foodItem.addEventListener("click", () => {
+      searchInput.value = dish.name;
+      cuisineSelector.value = "italian";
+      displayRecipeDetails(dish);
+      menuContainer.style.display = "none";
+    });
+    italianFoodList.appendChild(foodItem);
+  });
+  
+  // Populate Chinese food list
+  const chineseFoodList = document.getElementById("chinese-food-list");
+  chineseFoodList.innerHTML = "";
+  chineseDishes.forEach(dish => {
+    const foodItem = document.createElement("div");
+    foodItem.className = "food-item";
+    foodItem.textContent = dish.name;
+    foodItem.addEventListener("click", () => {
+      searchInput.value = dish.name;
+      cuisineSelector.value = "chinese";
+      displayRecipeDetails(dish);
+      menuContainer.style.display = "none";
+    });
+    chineseFoodList.appendChild(foodItem);
+  });
+}
+
+// Show menu when Menu button is clicked
+menuBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  populateMenu();
+  menuContainer.style.display = "block";
+});
+
+// Close menu when close button is clicked
+closeMenuBtn.addEventListener("click", () => {
+  menuContainer.style.display = "none";
+});
+
+// Close menu when clicking outside
+document.addEventListener("click", function(event) {
+  if (!menuContainer.contains(event.target) && event.target !== menuBtn) {
+    menuContainer.style.display = "none";
+  }
+});
         // Scroll positions for buttons
         nextBtn.addEventListener("click", () => {
           slider.scrollBy({ left: 320, behavior: "smooth" });

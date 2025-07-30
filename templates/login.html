@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>3D Login & Signup</title>
+  <title>3D Login & Signup - Foodies</title>
   <style>
     
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
@@ -15,17 +14,13 @@
   box-sizing: border-box;
 }
 
-h1 {
-  padding-bottom: 100%;
-}
-
 body {
   font-family: 'Orbitron', sans-serif;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('https://images.pexels.com/photos/1640773/pexels-photo-1640773.jpeg') no-repeat center center fixed;
+  background: url('https://png.pngtree.com/background/20230519/original/pngtree-chef-is-slicing-up-food-on-a-wooden-board-picture-image_2662770.jpg') no-repeat center center fixed;
   background-size: 100% 100%;
   overflow: hidden;
 }
@@ -42,6 +37,10 @@ body {
   transition: transform 1s ease-in-out;
   border-radius: 20px;
   box-shadow: 0 0 60px rgba(0, 255, 255, 0.4);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
 }
 
 .front, .back {
@@ -152,9 +151,37 @@ p a {
   text-decoration: none;
   font-weight: 600;
   transition: 0.3s ease;
+  cursor: pointer;
 }
 
 p a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 12px #00ffe5;
+}
+
+.form-error {
+  color: #ff4d4d;
+  margin: 10px 0 0 0;
+  text-align: center;
+  font-size: 14px;
+  animation: shake 0.5s;
+}
+
+.home-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #00ffe5;
+  font-size: 16px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-shadow: 0 0 8px #00ffe5;
+  transition: 0.3s ease;
+}
+
+.home-link:hover {
   color: #ffffff;
   text-shadow: 0 0 12px #00ffe5;
 }
@@ -164,70 +191,220 @@ p a:hover {
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
 @media (max-width: 420px) {
   .card {
     width: 90vw;
     height: auto;
+    min-height: 540px;
+  }
+  
+  .front, .back {
+    padding: 30px 20px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
   }
 }
 
-  </style>>
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        color: #007bff;
+        transition: all 0.3s ease; /* Added transition for logo */
+      }
+
+      .logo:hover {
+        color: #87ceeb; /* Hover effect for logo */
+        transform: scale(1.05);
+      }
+
+      .logo span {
+        color: white;
+      }
+
+  </style>
 </head>
 <body>
   <div class="container">
     <div class="card" id="card">
       <div class="front">
+        <div class="logo" align="center">FOOD<span>IES</span></div>
         <h2>Login</h2>
         <form id="loginForm" action="/login" method="POST">
-  <div class="inputBox">
-    <input name="email" type="email" required />
-    <span>Email</span>
-  </div>
-  <div class="inputBox">
-    <input name="password" type="password" required />
-    <span>Password</span>
-  </div>
-  <button type="submit">Login</button>
-          <p>Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
+          <div class="inputBox">
+            <input name="email" type="email" required />
+            <span>Email</span>
+          </div>
+          <div class="inputBox">
+            <input name="password" type="password" required/>
+            <span>Password</span>
+          </div>
+          <button type="submit">Login</button>
+          <p>Don't have an account? <a id="showSignup">Sign Up</a></p>
         </form>
       </div>
       <div class="back">
+        <div class="logo" align="center">FOOD<span>IES</span></div>
         <h2>Sign Up</h2>
         <form id="signupForm" action="/signup" method="POST">
-  <div class="inputBox">
-    <input name="username" type="text" required />
-    <span>Username</span>
-  </div>
-  <div class="inputBox">
-    <input name="email" type="email" required />
-    <span>Email</span>
-  </div>
-  <div class="inputBox">
-    <input name="password" type="password" required />
-    <span>Password</span>
-  </div>
-  <button type="submit">Sign Up</button>
-          <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+          <div class="inputBox">
+            <input name="username" type="text" required />
+            <span>Username</span>
+          </div>
+          <div class="inputBox">
+            <input name="email" type="email" required />
+            <span>Email</span>
+          </div>
+          <div class="inputBox">
+            <input name="password" type="password" required />
+            <span>Password</span>
+          </div>
+          <button type="submit">Sign Up</button>
+          <p>Already have an account? <a id="showLogin">Login</a></p>
         </form>
       </div>
     </div>
   </div>
-  <script >
+  <script>
+    const card = document.getElementById('card');
+    const showSignup = document.getElementById('showSignup');
+    const showLogin = document.getElementById('showLogin');
     
-const card = document.getElementById('card');
-const showSignup = document.getElementById('showSignup');
-const showLogin = document.getElementById('showLogin');
+    // Toggle between login and signup forms
+    showSignup.addEventListener('click', function() {
+      card.classList.add('flipped');
+    });
+    
+    showLogin.addEventListener('click', function() {
+      card.classList.remove('flipped');
+    });
+    
+    // Check URL hash for initial state
+    if (window.location.hash === '#signup') {
+      card.classList.add('flipped');
+    }
 
-showSignup.addEventListener('click', (e) => {
+    // Validation helpers
+    function isValidEmail(email) {
+      // Simple email regex
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showError(form, message) {
+      clearError(form);
+      const error = document.createElement('div');
+      error.className = 'form-error';
+      error.textContent = message;
+      form.appendChild(error);
+    }
+
+    function clearError(form) {
+      const error = form.querySelector('.form-error');
+      if (error) error.remove();
+    }
+
+    // Login form validation
+    // Login form validation
+const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener('submit', async function(e) {
   e.preventDefault();
-  card.style.transform = "rotateY(180deg)";
+  clearError(loginForm);
+  
+  const email = loginForm.email.value.trim();
+  const password = loginForm.password.value;
+  
+  console.log("Login attempt with:", email);
+  
+  if (!isValidEmail(email)) {
+    showError(loginForm, 'Please enter a valid email address.');
+    return;
+  }
+  
+  // No minimum password length validation since your test account has "123"
+  
+  // AJAX login
+  try {
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    
+    console.log("Login response status:", response.status);
+    
+    if (response.ok) {
+      console.log("Login successful");
+      // Login success, store email
+      localStorage.setItem('loginEmail', email);
+      // Redirect or reload
+      window.location.href = '/main';
+    } else {
+      const data = await response.json().catch(() => ({}));
+      showError(loginForm, data.message || 'Invalid email or password.');
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+    showError(loginForm, 'Network error. Please try again.');
+  }
 });
 
-showLogin.addEventListener('click', (e) => {
-  e.preventDefault();
-  card.style.transform = "rotateY(0deg)";
-});
-
+    // Signup form validation
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearError(signupForm);
+      
+      const username = signupForm.username.value.trim();
+      const email = signupForm.email.value.trim();
+      const password = signupForm.password.value;
+      
+      if (username.length < 3) {
+        showError(signupForm, 'Username must be at least 3 characters.');
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        showError(signupForm, 'Please enter a valid email address.');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showError(signupForm, 'Password must be at least 6 characters.');
+        return;
+      }
+      
+      // AJAX signup
+      try {
+        const response = await fetch('/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password })
+        });
+        
+        if (response.ok) {
+          // Show success message and flip to login
+          showError(signupForm, 'Account created successfully! Please log in.');
+          setTimeout(() => {
+            clearError(signupForm);
+            card.classList.remove('flipped');
+          }, 2000);
+        } else {
+          const data = await response.json().catch(() => ({}));
+          showError(signupForm, data.message || 'Error creating account. Try again.');
+        }
+      } catch (err) {
+        showError(signupForm, 'Network error. Please try again.');
+      }
+    });
   </script>
 </body>
 </html>
