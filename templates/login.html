@@ -268,6 +268,10 @@ p a:hover {
             <input name="password" type="password" required />
             <span>Password</span>
           </div>
+          <div class="inputBox">
+            <input name="confirmPassword" type="password" required />
+            <span>Confirm Password</span>
+          </div>
           <button type="submit">Sign Up</button>
           <p>Already have an account? <a id="showLogin">Login</a></p>
         </form>
@@ -366,7 +370,7 @@ loginForm.addEventListener('submit', async function(e) {
       const username = signupForm.username.value.trim();
       const email = signupForm.email.value.trim();
       const password = signupForm.password.value;
-      
+      const confirmPassword = signupForm.confirmPassword.value;
       if (username.length < 3) {
         showError(signupForm, 'Username must be at least 3 characters.');
         return;
@@ -381,13 +385,16 @@ loginForm.addEventListener('submit', async function(e) {
         showError(signupForm, 'Password must be at least 6 characters.');
         return;
       }
-      
+      if (password !== confirmPassword) {
+        showError(signupForm, 'Passwords do not match.');
+        return;
+      }
       // AJAX signup
       try {
         const response = await fetch('/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password })
+          body: JSON.stringify({ username, email, password, confirmPassword })
         });
         
         if (response.ok) {

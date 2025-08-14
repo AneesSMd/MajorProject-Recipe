@@ -80,7 +80,7 @@
         text-align: center;
         padding: 80px 20px;
         
-         background:  url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+         background:  url("https://t3.ftcdn.net/jpg/08/76/85/74/360_F_876857433_PQNgiOIqzYGZEKnSn4A3SHbGdmBRu7DQ.jpg")
             center/cover;
         color: white;
         position: relative;
@@ -98,7 +98,7 @@
         margin-bottom: 20px;
         font-family: "Poppins", cursive;
         font-weight: 700;
-        color: #e91e63;
+        color: #1e9be9;
         text-shadow: 0 0 20px rgba(233, 30, 99, 0.6),
           0 0 40px rgba(233, 30, 99, 0.4), 0 0 60px rgba(233, 30, 99, 0.2);
         letter-spacing: 2px;
@@ -814,7 +814,7 @@
       <div class="nav-links">
         <a href="{{url_for('main')}}">Home</a>
         <a href="#help" id="help-link">Help</a>
-        <a href="/logout" class="logout-btn">Logout</a>
+        <a href="{{url_for('logout')}}">Logout</a>
         <!-- <a href="{{url_for('login')}}">Login</a>
         <a href="{{url_for('signup')}}">Signup</a> -->
       </div>
@@ -5623,6 +5623,8 @@ document.addEventListener("click", function(event) {
             return;
           }
 
+
+
           let dishesToFilter = [];
           if (selectedCuisine === "indian") {
             dishesToFilter = indianDishes;
@@ -5635,28 +5637,37 @@ document.addEventListener("click", function(event) {
             return;
           }
 
-          const filteredDishes = dishesToFilter.filter((dish) =>
-            dish.name.toLowerCase().includes(searchTerm)
-          );
+           // Separate dishes that start with the search term vs just contain it
+  const startsWithTerm = dishesToFilter.filter((dish) =>
+    dish.name.toLowerCase().startsWith(searchTerm)
+  );
+  const containsTerm = dishesToFilter.filter((dish) => {
+    return (
+      dish.name.toLowerCase().includes(searchTerm) &&
+      !dish.name.toLowerCase().startsWith(searchTerm)
+    );
+  });
 
-          if (filteredDishes.length > 0) {
-            autocompleteSuggestions.style.display = "block";
-            filteredDishes.forEach((dish) => {
-              const suggestionItem = document.createElement("div");
-              suggestionItem.classList.add("autocomplete-suggestion-item");
-              suggestionItem.textContent = dish.name;
-              suggestionItem.addEventListener("click", () => {
-                searchInput.value = dish.name; // Populate search bar
-                autocompleteSuggestions.innerHTML = ""; // Clear suggestions
-                autocompleteSuggestions.style.display = "none";
-                displayRecipeDetails(dish); // Display recipe details
-              });
-              autocompleteSuggestions.appendChild(suggestionItem);
-            });
-          } else {
-            autocompleteSuggestions.style.display = "none";
-          }
-        });
+  const filteredDishes = startsWithTerm.concat(containsTerm);
+
+  if (filteredDishes.length > 0) {
+    autocompleteSuggestions.style.display = "block";
+    filteredDishes.forEach((dish) => {
+      const suggestionItem = document.createElement("div");
+      suggestionItem.classList.add("autocomplete-suggestion-item");
+      suggestionItem.textContent = dish.name;
+      suggestionItem.addEventListener("click", () => {
+        searchInput.value = dish.name; // Populate search bar
+        autocompleteSuggestions.innerHTML = ""; // Clear suggestions
+        autocompleteSuggestions.style.display = "none";
+        displayRecipeDetails(dish); // Display recipe details
+      });
+      autocompleteSuggestions.appendChild(suggestionItem);
+    });
+  } else {
+    autocompleteSuggestions.style.display = "none";
+  }
+});
 
         // Hide suggestions when clicking outside
         document.addEventListener("click", function (event) {
