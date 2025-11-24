@@ -212,7 +212,7 @@ def signup():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 
 @app.route('/main')
